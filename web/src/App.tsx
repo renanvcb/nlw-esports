@@ -23,20 +23,12 @@ interface Game {
 
 function App() {
   const [games, setGames] = useState<Game[]>([])
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [loaded, setLoaded] = useState(false)
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+  const [sliderRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 5,
       spacing: 15,
     },
-    initial: 0,
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel)
-    },
-    created() {
-      setLoaded(true)
-    },
+
   })
 
   useEffect(() => {
@@ -44,30 +36,6 @@ function App() {
       setGames(response.data)
     })
   }, [])
-
-  function Arrow(props: {
-    disabled: boolean
-    left?: boolean
-    onClick: (e: any) => void
-  }) {
-    const disabeld = props.disabled ? " arrow--disabled" : ""
-    return (
-      <svg
-        onClick={props.onClick}
-        className={`arrow ${props.left ? "arrow--left" : "arrow--right"
-          } ${disabeld}`}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        {props.left && (
-          <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
-        )}
-        {!props.left && (
-          <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
-        )}
-      </svg>
-    )
-  }
 
   return (
     <div className='max-w-[1344px] mx-auto flex flex-col items-center my-20'>
